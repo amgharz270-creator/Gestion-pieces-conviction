@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('emplacements', function (Blueprint $table) {
             $table->id();
-            $table->string('salle'); // Salle A, Salle B
+            $table->string('local'); // Salle A, Salle B
             $table->string('armoire'); // Armoire 1, 2, 3...
             $table->string('etagere')->nullable(); // Haut, Bas, Milieu
             $table->string('boite')->nullable(); // Boîte numérotée

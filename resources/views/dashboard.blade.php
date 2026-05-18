@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Tableau de Bord Admin - TPI Sidi Bennour')
 
