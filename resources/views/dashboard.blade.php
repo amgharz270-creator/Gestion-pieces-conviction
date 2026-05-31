@@ -710,16 +710,16 @@
                     <i class="bi bi-grid-fill"></i>
                     <span>Tableau de Bord</span>
                 </a>
-                <a href="#" class="menu-item">
-                    <i class="bi bi-box-seam"></i>
-                    <span>Pièces à Conviction</span>
-                    <span class="badge-count">156</span>
-                </a>
-                <a href="#" class="menu-item">
-                    <i class="bi bi-folder"></i>
-                    <span>Dossiers</span>
-                    <span class="badge-count">45</span>
-                </a>
+               <a href="{{ route('pieces.index') }}" class="menu-item">
+    <i class="bi bi-box-seam"></i>
+    <span>Pièces à Conviction</span>
+    <span class="badge-count">{{ $piecesCount ?? 0 }}</span>
+</a>
+               <a href="{{ route('dossiers.index') }}" class="menu-item">
+    <i class="bi bi-folder"></i>
+    <span>Dossiers</span>
+    <span class="badge-count">{{ $dossiersCount ?? 0 }}</span>
+</a>
                 <a href="#" class="menu-item">
                     <i class="bi bi-geo-alt"></i>
                     <span>Emplacements</span>
@@ -1084,6 +1084,79 @@
 
 @push('scripts')
 <script>
+    // Chart.js - Graphique Évolution
+const chartCtx = document.getElementById('evolutionChart').getContext('2d');
+
+// Les données viennent de PHP $chartData (déjà préparées dans AdminController)
+const chartLabels = @json(array_column($chartData, 'mois'));
+const piecesData = @json(array_column($chartData, 'pieces'));
+const restitutionsData = @json(array_column($chartData, 'restitutions'));
+
+new Chart(chartCtx, {
+    type: 'line',
+    data: {
+        labels: chartLabels,
+        datasets: [
+            {
+                label: 'Pièces à Conviction',
+                data: piecesData,
+                borderColor: '#c9a227',
+                backgroundColor: 'rgba(201, 162, 39, 0.1)',
+                borderWidth: 3,
+                tension: 0.3,
+                fill: true,
+                pointBackgroundColor: '#c9a227',
+                pointBorderColor: '#fff',
+                pointRadius: 5,
+                pointHoverRadius: 7
+            },
+            {
+                label: 'Restitutions',
+                data: restitutionsData,
+                borderColor: '#28a745',
+                backgroundColor: 'rgba(40, 167, 69, 0.05)',
+                borderWidth: 3,
+                tension: 0.3,
+                fill: true,
+                pointBackgroundColor: '#28a745',
+                pointBorderColor: '#fff',
+                pointRadius: 5,
+                pointHoverRadius: 7
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+            legend: {
+                labels: {
+                    color: '#fff',
+                    font: { family: 'Poppins', size: 12 }
+                },
+                position: 'top'
+            },
+            tooltip: {
+                mode: 'index',
+                intersect: false,
+                backgroundColor: 'rgba(0,0,0,0.8)',
+                titleColor: '#c9a227',
+                bodyColor: '#fff'
+            }
+        },
+        scales: {
+            y: {
+                grid: { color: 'rgba(255,255,255,0.05)' },
+                ticks: { color: 'rgba(255,255,255,0.6)' },
+                title: { display: true, text: 'Nombre', color: '#fff' }
+            },
+            x: {
+                grid: { display: false },
+                ticks: { color: 'rgba(255,255,255,0.6)' }
+            }
+        }
+    }
+});
     function toggleSidebar() {
         document.getElementById('sidebar').classList.toggle('active');
     }

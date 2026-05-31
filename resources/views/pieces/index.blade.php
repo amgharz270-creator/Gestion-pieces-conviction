@@ -75,7 +75,10 @@
             <div class="menu-section">
                 <div class="menu-section-title">Principal</div>
                 <a href="{{ route('dashboard') }}" class="menu-item"><i class="bi bi-grid-fill"></i><span>Tableau de Bord</span></a>
-                <a href="{{ route('pieces.index') }}" class="menu-item active"><i class="bi bi-box-seam"></i><span>Pièces</span></a>
+               <a href="{{ route('pieces.index') }}" class="menu-item active">
+    <i class="bi bi-box-seam"></i>
+    <span>Pièces</span>
+</a>
                 <a href="{{ route('dossiers.index') }}" class="menu-item"><i class="bi bi-folder"></i><span>Dossiers</span></a>
                 <a href="{{ route('emplacements.index') }}" class="menu-item"><i class="bi bi-geo-alt"></i><span>Emplacements</span></a>
             </div>

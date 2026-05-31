@@ -37,16 +37,16 @@ class AdminController extends Controller
         
         // Données pour le graphique (6 derniers mois)
         $chartData = [];
-        for ($i = 5; $i >= 0; $i--) {
-            $month = now()->subMonths($i);
-            $chartData[] = [
-                'mois' => $month->format('M Y'),
-                'pieces' => PieceConviction::whereMonth('created_at', $month->month)
-                    ->whereYear('created_at', $month->year)->count(),
-                'restitutions' => Restitution::whereMonth('created_at', $month->month)
-                    ->whereYear('created_at', $month->year)->count(),
-            ];
-        }
+for ($i = 5; $i >= 0; $i--) {
+    $month = now()->subMonths($i);
+    $chartData[] = [
+        'mois' => $month->format('M Y'),
+        'pieces' => PieceConviction::whereMonth('created_at', $month->month)
+            ->whereYear('created_at', $month->year)->count(),
+        'restitutions' => Restitution::whereMonth('created_at', $month->month)
+            ->whereYear('created_at', $month->year)->count(),
+    ];
+}
         
         // Emplacements avec capacité
         $emplacements = Emplacement::withCount('pieces')->get();
