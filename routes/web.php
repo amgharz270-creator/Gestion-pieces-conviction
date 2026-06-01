@@ -25,30 +25,33 @@ Route::get('/contact', function () {
 })->name('contact');
 
 Route::post('/contact', function () {
-    return redirect()->route('contact')->with('success', 'Message envoyé avec succès !');
+    return redirect()->route('contact')->with('success', 'Message envoye avec succes !');
 })->name('contact.send');
 
-// ========== AUTH ==========
+// ========== AUTH (GUEST ONLY) ==========
 
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::middleware(['guest'])->group(function () {
+    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+    Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/register', [AuthController::class, 'register']);
+});
 
-// ========== ROUTES PROTÉGÉES (auth) ==========
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+
+// ========== ROUTES PROTEGEES (AUTH) ==========
 
 Route::middleware(['auth'])->group(function () {
     
-    // ⭐ DASHBOARD
+    // DASHBOARD
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     
-    // ⭐ PROFILE
+    // PROFILE
     Route::get('/profile', function () {
         return view('profile.edit');
     })->name('profile.edit');
     
-    // ⭐ CRUD CONTROLLERS (CHAQUE ROUTE UNE SEULE FOIS!)
+    // CRUD CONTROLLERS
     Route::resource('pieces', PieceConvictionController::class);
     Route::resource('dossiers', DossierController::class);
     Route::resource('emplacements', EmplacementController::class);
@@ -56,4 +59,13 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('mouvements', MouvementController::class);
     Route::resource('users', UserController::class);
     
+    // ACTIONS CUSTOM RESTITUTIONS
+    Route::patch('/restitutions/{restitution}/approuver', [RestitutionController::class, 'approuver'])
+        ->name('restitutions.approuver');
+    Route::post('/restitutions/{restitution}/effectuer', [RestitutionController::class, 'effectuer'])
+        ->name('restitutions.effectuer');
+    
+    // ACTIONS CUSTOM MOUVEMENTS
+    Route::patch('/mouvements/{mouvement}/retour', [MouvementController::class, 'retour'])
+        ->name('mouvements.retour');
 });
