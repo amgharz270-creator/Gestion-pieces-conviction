@@ -66,7 +66,16 @@
     .stat-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 25px 20px; }
     .stat-number { font-size: 1.8rem; font-weight: 800; color: var(--text-light); margin-bottom: 5px; }
     .stat-label { color: var(--text-muted); font-size: 0.85rem; }
-    @media (max-width: 768px) { .admin-sidebar { transform: translateX(-100%); } .main-content { margin-left: 0; } .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 768px) { .admin-sidebar { transform: translateX(-100%); } .main-content { margin-left: 0; } .stats-grid { grid-template-columns: repeat(2, 1fr); } 
+    }
+    .status-refusee {
+    background: rgba(220, 53, 69, 0.15);
+    color: var(--danger);
+}
+.status-effectuee {
+    background: rgba(40, 167, 69, 0.15);
+    color: var(--success);
+}
 </style>
 @endpush
 

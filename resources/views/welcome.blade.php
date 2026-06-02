@@ -428,25 +428,25 @@
                 <div class="row g-0">
                     <div class="col-6 col-lg-3">
                         <div class="stat-box-white">
-                            <span class="number">150+</span>
+                            <span class="number">{{ $piecesCount ?? 0 }}+</span> 
                             <div class="label">Pièces Gérées</div>
                         </div>
                     </div>
                     <div class="col-6 col-lg-3">
                         <div class="stat-box-white">
-                            <span class="number">45</span>
+                            <span class="number">{{ $dossiersCount ?? 0 }}</span>
                             <div class="label">Dossiers Actifs</div>
                         </div>
                     </div>
                     <div class="col-6 col-lg-3">
                         <div class="stat-box-white">
-                            <span class="number">12</span>
+                            <span class="number">{{ $restitutionsCount ?? 0 }}</span>
                             <div class="label">Restitutions</div>
                         </div>
                     </div>
                     <div class="col-6 col-lg-3">
                         <div class="stat-box-white">
-                            <span class="number">99%</span>
+                            <span class="number">{{ $securityRate ?? '99%' }}</span>
                             <div class="label">Sécurité</div>
                         </div>
                     </div>

@@ -14,7 +14,7 @@ class RestitutionController extends Controller
     {
         $restitutions = Restitution::with(['piece', 'approvedBy'])
             ->latest()
-            ->paginate(10);
+            ->paginate(15);
         return view('restitutions.index', compact('restitutions'));
     }
 

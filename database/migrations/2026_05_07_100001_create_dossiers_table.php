@@ -19,6 +19,9 @@ return new class extends Migration
             $table->date('date_cloture')->nullable();
             $table->text('observations')->nullable();
             $table->timestamps();
+            $table->softDeletes(); // Ajouter
+            $table->unsignedBigInteger('created_by')->nullable(); // Ajouter
+            $table->foreign('created_by')->references('id')->on('users');
         });
     }
 

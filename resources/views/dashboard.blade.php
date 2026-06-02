@@ -720,10 +720,10 @@
     <span>Dossiers</span>
     <span class="badge-count">{{ $dossiersCount ?? 0 }}</span>
 </a>
-                <a href="#" class="menu-item">
-                    <i class="bi bi-geo-alt"></i>
-                    <span>Emplacements</span>
-                </a>
+                <a href="{{ route('emplacements.index') }}" class="menu-item">
+    <i class="bi bi-geo-alt"></i>
+    <span>Emplacements</span>
+</a>
             </div>
 
             <div class="menu-section">
@@ -886,10 +886,10 @@
                 </h3>
             </div>
             <div class="quick-actions-grid">
-                <a href="#" class="quick-action-btn">
-                    <i class="bi bi-plus-lg"></i>
-                    <span>Nouvelle Pièce</span>
-                </a>
+                <a href="{{ route('pieces.create') }}" class="quick-action-btn">
+    <i class="bi bi-plus-lg"></i>
+    <span>Nouvelle Pièce</span>
+</a>
                 <a href="#" class="quick-action-btn">
                     <i class="bi bi-folder-plus"></i>
                     <span>Nouveau Dossier</span>
@@ -916,13 +916,9 @@
                             <option>Cette Semaine</option>
                         </select>
                     </div>
-                    <div class="chart-placeholder">
-                        <div style="text-align: center;">
-                            <i class="bi bi-bar-chart" style="font-size: 3rem; color: var(--accent-gold); margin-bottom: 15px; display: block;"></i>
-                            <p>Graphique d'évolution des pièces à conviction</p>
-                            <p style="font-size: 0.8rem; margin-top: 10px;">Intégrez Chart.js pour afficher les données réelles</p>
-                        </div>
-                    </div>
+                  <div class="chart-placeholder" style="padding: 0; background: none;">
+    <canvas id="evolutionChart" style="max-height: 300px; width: 100%;"></canvas>
+</div>
                 </div>
 
                 {{-- Activity Feed --}}
@@ -1083,14 +1079,14 @@
 @endsection
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
-    // Chart.js - Graphique Évolution
-const chartCtx = document.getElementById('evolutionChart').getContext('2d');
-
-// Les données viennent de PHP $chartData (déjà préparées dans AdminController)
-const chartLabels = @json(array_column($chartData, 'mois'));
-const piecesData = @json(array_column($chartData, 'pieces'));
-const restitutionsData = @json(array_column($chartData, 'restitutions'));
+ const chartCanvas = document.getElementById('evolutionChart');
+    if (chartCanvas) {
+        const chartCtx = chartCanvas.getContext('2d');
+        const chartLabels = @json(array_column($chartData ?? [], 'mois'));
+        const piecesData = @json(array_column($chartData ?? [], 'pieces'));
+        const restitutionsData = @json(array_column($chartData ?? [], 'restitutions'));
 
 new Chart(chartCtx, {
     type: 'line',
@@ -1157,6 +1153,7 @@ new Chart(chartCtx, {
         }
     }
 });
+}
     function toggleSidebar() {
         document.getElementById('sidebar').classList.toggle('active');
     }

@@ -125,7 +125,7 @@
                     </div>
                     <div class="detail-row">
                         <span class="detail-label">Type d'Affaire</span>
-                        <span class="detail-value">{{ ucfirst($piece->dossier->type_affaire ?? 'N/A') }}</span>
+                        <span class="detail-value">{{ $piece->dossier ? ucfirst($piece->dossier->type_affaire) : 'N/A' }}</span>
                     </div>
                     <div class="detail-row">
                         <span class="detail-label">Emplacement</span>

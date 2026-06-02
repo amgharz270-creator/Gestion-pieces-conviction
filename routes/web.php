@@ -9,12 +9,10 @@ use App\Http\Controllers\EmplacementController;
 use App\Http\Controllers\RestitutionController;
 use App\Http\Controllers\MouvementController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\HomeController;
 
-// ========== PAGES PUBLIQUES ==========
-
-Route::get('/', function () {
-    return view('welcome');
-})->name('welcome');
+Route::get('/', [HomeController::class, 'index'])->name('welcome');
 
 Route::get('/about', function () {
     return view('about');
@@ -64,7 +62,7 @@ Route::middleware(['auth'])->group(function () {
         ->name('restitutions.approuver');
     Route::post('/restitutions/{restitution}/effectuer', [RestitutionController::class, 'effectuer'])
         ->name('restitutions.effectuer');
-    
+    Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
     // ACTIONS CUSTOM MOUVEMENTS
     Route::patch('/mouvements/{mouvement}/retour', [MouvementController::class, 'retour'])
         ->name('mouvements.retour');

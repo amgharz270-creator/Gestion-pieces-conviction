@@ -502,9 +502,9 @@
                                 <select name="subject" class="form-select form-control-dark" required>
                                     <option value="">Choisir un sujet</option>
                                     <option value="support">Support Technique</option>
-                                    <option value="demande">Demande d'Information</option>
-                                    <option value="bug">Signaler un Bug</option>
-                                    <option value="autre">Autre</option>
+<option value="information">Demande d'Information</option>
+<option value="bug">Signaler un Bug</option>
+<option value="autre">Autre</option>
                                 </select>
                             </div>
 

@@ -147,7 +147,7 @@
 
                     <div class="col-md-4">
                         <label class="form-label">Valeur Estimée (DH)</label>
-                        <input type="number" name="valeur_estimee" class="form-control form-control-dark {{ $errors->has('valeur_estimee') ? 'is-invalid' : '' }}" value="{{ old('valeur_estimee') }}" step="0.01" min="0">
+                        <input type="number" name="valeur_estimee" step="any" class="form-control form-control-dark">
                         @if($errors->has('valeur_estimee'))<div class="invalid-feedback">{{ $errors->first('valeur_estimee') }}</div>@endif
                     </div>
 
