@@ -11,6 +11,7 @@ use App\Http\Controllers\MouvementController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InventaireController;
 
 Route::get('/', [HomeController::class, 'index'])->name('welcome');
 
@@ -66,4 +67,12 @@ Route::middleware(['auth'])->group(function () {
     // ACTIONS CUSTOM MOUVEMENTS
     Route::patch('/mouvements/{mouvement}/retour', [MouvementController::class, 'retour'])
         ->name('mouvements.retour');
+    // Routes pour les inventaires
+Route::resource('inventaires', InventaireController::class);
+Route::patch('/inventaires/{inventaire}/demarrer', [InventaireController::class, 'demarrer'])->name('inventaires.demarrer');
+Route::patch('/inventaires/{inventaire}/terminer', [InventaireController::class, 'terminer'])->name('inventaires.terminer');
+Route::patch('/inventaires-lignes/{ligne}', [InventaireController::class, 'updateLigne'])->name('inventaires.updateLigne');
+Route::get('/inventaires-anomalies', [InventaireController::class, 'anomalies'])->name('inventaires.anomalies');
+Route::get('/inventaires/{inventaire}/export', [InventaireController::class, 'export'])->name('inventaires.export');
+Route::get('/inventaires-statistiques', [InventaireController::class, 'statistiques'])->name('inventaires.statistiques');    
 });

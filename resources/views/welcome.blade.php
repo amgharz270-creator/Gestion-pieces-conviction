@@ -389,10 +389,7 @@
     {{-- Partie haute : Titre et boutons --}}
  <div class="hero-content-top">
     <div>
-        <div class="badge-top">
-            <i class="bi bi-shield-lock-fill"></i>
-            Système Sécurisé de Gestion Judiciaire
-        </div>
+        
         
         <h1>
             Gestion des Pièces
