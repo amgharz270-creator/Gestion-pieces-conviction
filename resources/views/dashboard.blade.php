@@ -764,7 +764,7 @@
             </div>
         </nav>
 
-        <div class="sidebar-footer">
+        <!--<div class="sidebar-footer">
             <div class="user-profile-mini">
                 <div class="user-avatar">
                     {{ substr(Auth::user()->name, 0, 1) }}
@@ -774,7 +774,7 @@
                     <span>{{ Auth::user()->role }}</span>
                 </div>
             </div>
-        </div>
+        </div>-->
     </aside>
 
     {{-- ===== MAIN CONTENT ===== --}}
