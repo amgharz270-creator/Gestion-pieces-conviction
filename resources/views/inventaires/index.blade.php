@@ -112,7 +112,7 @@
                 <a href="{{ route('inventaires.statistiques') }}" class="menu-item"><i class="bi bi-graph-up"></i><span>Statistiques</span></a>
             </div>
         </nav>
-        <div class="sidebar-footer" style="padding: 20px 25px; border-top: 1px solid rgba(255,255,255,0.1);">
+        <!--<div class="sidebar-footer" style="padding: 20px 25px; border-top: 1px solid rgba(255,255,255,0.1);">
             <div class="user-profile-mini" style="display: flex; align-items: center; gap: 12px;">
                 <div class="user-avatar" style="width: 45px; height: 45px; background: linear-gradient(135deg, var(--accent-gold) 0%, #b8941f 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--primary-dark); font-weight: 700;">{{ substr(Auth::user()->name, 0, 1) }}</div>
                 <div>
@@ -120,7 +120,7 @@
                     <span style="color: var(--accent-gold); font-size: 0.75rem;">{{ Auth::user()->role }}</span>
                 </div>
             </div>
-        </div>
+        </div>-->
     </aside>
 
     <main class="main-content">

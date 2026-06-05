@@ -99,7 +99,7 @@
                 <a href="{{ route('mouvements.index') }}" class="menu-item"><i class="bi bi-arrow-left-right"></i><span>Mouvements</span></a>
             </div>
         </nav>
-        <div class="sidebar-footer">
+        <!--<div class="sidebar-footer">
             <div class="user-profile-mini">
                 <div class="user-avatar">{{ substr(Auth::user()->name, 0, 1) }}</div>
                 <div class="user-info-mini">
@@ -107,7 +107,7 @@
                     <span>{{ Auth::user()->role }}</span>
                 </div>
             </div>
-        </div>
+        </div>-->
     </aside>
 
     <main class="main-content">

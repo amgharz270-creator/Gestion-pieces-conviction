@@ -14,25 +14,67 @@ class PieceConvictionController extends Controller
     /**
      * Afficher la liste des pièces
      */
-    public function index()
-{ 
-    $pieces = PieceConviction::with(['dossier', 'emplacement']) // ⭐ هاد هو الح
-        ->latest()
-        ->paginate(10);
     
-    return view('pieces.index', compact('pieces'));
-}
+ public function index()
+    {
+        $user = Auth::user();
+        
+        // إذا كان المستخدم admin يشوف كلشي
+        if ($user->hasRole('admin')) {
+            $pieces = PieceConviction::with(['dossier', 'emplacement'])
+                ->latest()
+                ->paginate(10);
+        } 
+        // إذا كان responsable_argent يشوف غير argent و bijou
+        elseif ($user->hasRole('responsable_argent')) {
+            $pieces = PieceConviction::whereIn('categorie', ['argent', 'bijou'])
+                ->with(['dossier', 'emplacement'])
+                ->latest()
+                ->paginate(10);
+        }
+        // إذا كان responsable_destruction يشوف غير drogue, arme, liquide
+        elseif ($user->hasRole('responsable_destruction')) {
+            $pieces = PieceConviction::whereIn('categorie', ['drogue', 'arme', 'liquide'])
+                ->with(['dossier', 'emplacement'])
+                ->latest()
+                ->paginate(10);
+        }
+        // إذا كان responsable_conservation يشوف الباقي
+        else {
+            $pieces = PieceConviction::whereIn('categorie', ['document', 'electronique', 'objet', 'vehicule', 'autre'])
+                ->with(['dossier', 'emplacement'])
+                ->latest()
+                ->paginate(10);
+        }
+        
+        return view('pieces.index', compact('pieces'));
+    }
 
     /**
      * Afficher le formulaire de création
      */
-    public function create()
-    {
-        $dossiers = Dossier::where('statut', 'en_cours')->get();
-        $emplacements = Emplacement::where('actif', true)->get();
-
-        return view('pieces.create', compact('dossiers', 'emplacements'));
-    }
+   public function create()
+{
+    $user = Auth::user();
+    $categoriesAutorisees = $user->getCategoriesAutorisees();
+    
+    // Filtrer les catégories disponibles
+    $toutesCategories = [
+        'argent' => '💰 Argent', 'bijou' => '💎 Bijou',
+        'drogue' => '💊 Drogue', 'arme' => '🔫 Arme', 'liquide' => '🧪 Liquide',
+        'document' => '📄 Document', 'electronique' => '📱 Électronique',
+        'objet' => '📦 Objet', 'vehicule' => '🚗 Véhicule', 'autre' => '📌 Autre',
+    ];
+    
+    $categoriesDisponibles = array_filter($toutesCategories, function($key) use ($categoriesAutorisees) {
+        return in_array($key, $categoriesAutorisees);
+    }, ARRAY_FILTER_USE_KEY);
+    
+    $dossiers = Dossier::where('statut', 'en_cours')->get();
+    $emplacements = Emplacement::where('actif', true)->get();
+    
+    return view('pieces.create', compact('dossiers', 'emplacements', 'categoriesDisponibles'));
+}
 
     /**
      * Enregistrer une nouvelle pièce

@@ -728,16 +728,16 @@
 
             <div class="menu-section">
                 <div class="menu-section-title">Gestion</div>
-                <a href="#" class="menu-item">
+                <a href="{{ route('restitutions.index') }}" class="menu-item">
                     <i class="bi bi-arrow-return-left"></i>
                     <span>Restitutions</span>
                     <span class="badge-count">8</span>
                 </a>
-                <a href="#" class="menu-item">
+                <a href="{{ route('inventaires.index') }}" class="menu-item">
                     <i class="bi bi-clipboard-check"></i>
                     <span>Inventaires</span>
                 </a>
-                <a href="#" class="menu-item">
+                <a href="{{ route('mouvements.index') }}" class="menu-item">
                     <i class="bi bi-arrow-left-right"></i>
                     <span>Mouvements</span>
                 </a>
@@ -745,11 +745,11 @@
 
             <div class="menu-section">
                 <div class="menu-section-title">Administration</div>
-                <a href="#" class="menu-item">
-                    <i class="bi bi-people"></i>
-                    <span>Utilisateurs</span>
-                </a>
-                <a href="#" class="menu-item">
+                <a href="{{ route('users.index') }}" class="menu-item">
+    <i class="bi bi-people"></i>
+    <span>Utilisateurs</span>
+</a>
+                <a href="{{ route('roles.index') }}" class="menu-item">
                     <i class="bi bi-shield-check"></i>
                     <span>Rôles & Permissions</span>
                 </a>
