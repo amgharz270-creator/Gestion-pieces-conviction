@@ -753,7 +753,7 @@
                     <i class="bi bi-shield-check"></i>
                     <span>Rôles & Permissions</span>
                 </a>
-                <a href="#" class="menu-item">
+                <a href="{{ route('rapports.index') }}" class="menu-item">
                     <i class="bi bi-graph-up"></i>
                     <span>Rapports & Stats</span>
                 </a>

@@ -13,7 +13,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InventaireController;
 use App\Http\Controllers\RoleController;
-
+use App\Http\Controllers\RapportController;
 
 // ========== PAGES PUBLIQUES ==========
 Route::get('/', [HomeController::class, 'index'])->name('welcome');
@@ -62,9 +62,9 @@ Route::middleware(['auth'])->group(function () {
     });
     
     // ========== PIECES (avec permission view_pieces) ==========
-    Route::middleware(['permission:view_pieces'])->group(function () {
+    //Route::middleware(['permission:view_pieces'])->group(function () {
         Route::resource('pieces', PieceConvictionController::class);
-    });
+    //});
     
     // ========== DOSSIERS ==========
     Route::resource('dossiers', DossierController::class);
@@ -97,5 +97,19 @@ Route::middleware(['auth'])->group(function () {
     //Route::middleware(['role:admin'])->group(function () {
     Route::resource('users', UserController::class);
     Route::patch('/users/{user}/password', [UserController::class, 'updatePassword'])->name('users.updatePassword');
+// ========== ROLES & PERMISSIONS ==========
+Route::resource('roles', RoleController::class);
+// ========== RAPPORTS & STATISTIQUES ==========
+Route::middleware(['auth'])->prefix('rapports')->group(function () {
+    Route::get('/', [RapportController::class, 'index'])->name('rapports.index');
+    Route::get('/pieces', [RapportController::class, 'pieces'])->name('rapports.pieces');
+    Route::get('/dossiers', [RapportController::class, 'dossiers'])->name('rapports.dossiers');
+    Route::get('/restitutions', [RapportController::class, 'restitutions'])->name('rapports.restitutions');
+    Route::get('/inventaires', [RapportController::class, 'inventaires'])->name('rapports.inventaires');
+    Route::get('/mouvements', [RapportController::class, 'mouvements'])->name('rapports.mouvements');
+    Route::get('/export-pdf/{type}', [RapportController::class, 'exportPDF'])->name('rapports.export-pdf');
+    Route::get('/export-excel/{type}', [RapportController::class, 'exportExcel'])->name('rapports.export-excel');
+});
+
 }); 
 //});

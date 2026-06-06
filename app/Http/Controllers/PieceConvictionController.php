@@ -8,7 +8,7 @@ use App\Models\Dossier;
 use App\Models\Emplacement;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Auth;
 class PieceConvictionController extends Controller
 {
     /**
