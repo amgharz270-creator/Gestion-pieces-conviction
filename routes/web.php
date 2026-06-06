@@ -94,7 +94,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('inventaires', InventaireController::class);
 
      // ========== ROLES & PERMISSIONS (admin only) ==========
-    Route::middleware(['role:admin'])->group(function () {
-        Route::resource('roles', RoleController::class);
-     });   
-});
+    //Route::middleware(['role:admin'])->group(function () {
+    Route::resource('users', UserController::class);
+    Route::patch('/users/{user}/password', [UserController::class, 'updatePassword'])->name('users.updatePassword');
+}); 
+//});

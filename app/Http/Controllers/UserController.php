@@ -13,9 +13,8 @@ class UserController extends Controller
 {
     // Vérifier si l'utilisateur a le rôle 'admin' via Spatie
     if (!Auth::user()->hasRole('admin')) {
-        abort(403, 'Seul l\'administrateur peut gérer les utilisateurs.');
+        abort(403, 'Accès non autorisé. Seul l\'administrateur peut accéder.');
     }
-
     $users = User::latest()->paginate(10);
     return view('users.index', compact('users'));
 }
