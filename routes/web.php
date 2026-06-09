@@ -107,8 +107,8 @@ Route::middleware(['auth'])->prefix('rapports')->group(function () {
     Route::get('/restitutions', [RapportController::class, 'restitutions'])->name('rapports.restitutions');
     Route::get('/inventaires', [RapportController::class, 'inventaires'])->name('rapports.inventaires');
     Route::get('/mouvements', [RapportController::class, 'mouvements'])->name('rapports.mouvements');
-    Route::get('/export-pdf/{type}', [RapportController::class, 'exportPDF'])->name('rapports.export-pdf');
-    Route::get('/export-excel/{type}', [RapportController::class, 'exportExcel'])->name('rapports.export-excel');
+    Route::get('/export-pdf', [RapportController::class, 'exportPDF'])->name('rapports.export-pdf');
+    Route::get('/export-excel', [RapportController::class, 'exportExcel'])->name('rapports.export-excel');
 });
 // ========== PARAMÈTRES ==========
 Route::middleware(['auth'])->prefix('parametres')->group(function () {
@@ -144,6 +144,9 @@ Route::get('/api/piece-by-qr/{qrCode}', function ($qrCode) {
     }
     return response()->json(['success' => false]);
 })->name('api.piece.by-qr')->middleware('auth'); 
-
+Route::get('/qr-codes', function () {
+    $pieces = App\Models\PieceConviction::all();
+    return view('pieces.qr-codes', compact('pieces'));
+})->name('qr.codes')->middleware('auth');
 }); 
 //});

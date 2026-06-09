@@ -11,6 +11,12 @@ use App\Models\Mouvement;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Exports\PiecesExport;
+use App\Exports\DossiersExport;
+use App\Exports\RestitutionsExport;
+use App\Exports\InventairesExport;
+use App\Exports\MouvementsExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class RapportController extends Controller
 {
@@ -182,60 +188,103 @@ class RapportController extends Controller
 
     // ⭐⭐⭐ UNE SEULE méthode exportPDF ⭐⭐⭐
     public function exportPDF(Request $request)
-    {
-        if (!Auth::user()->hasRole('admin')) {
-            abort(403);
-        }
-
-        $type = $request->get('type', 'pieces');
-        $format = $request->get('format', 'pdf');
-        
-        switch($type) {
-            case 'pieces':
-                $query = PieceConviction::with(['dossier', 'emplacement']);
-                break;
-            case 'dossiers':
-                $query = Dossier::with('pieces');
-                break;
-            case 'restitutions':
-                $query = Restitution::with('piece');
-                break;
-            case 'inventaires':
-                $query = Inventaire::with(['realisePar', 'verifiePar']);
-                break;
-            case 'mouvements':
-                $query = Mouvement::with(['piece', 'fromEmplacement', 'toEmplacement']);
-                break;
-            default:
-                $query = PieceConviction::query();
-        }
-        
-        if ($request->date_debut) {
-            $query->whereDate('created_at', '>=', $request->date_debut);
-        }
-        if ($request->date_fin) {
-            $query->whereDate('created_at', '<=', $request->date_fin);
-        }
-        if ($request->statut) {
-            $query->where('statut', $request->statut);
-        }
-        
-        $data = $query->get();
-        
-        if ($format == 'excel') {
-            return $this->exportExcel($type, $data);
-        }
-        
-        return view('rapports.export-pdf', compact('data', 'type'));
+{
+    if (!Auth::user()->hasRole('admin')) {
+        abort(403);
     }
 
-    public function exportExcel($type, $data = null)
-    {
-        if (!Auth::user()->hasRole('admin')) {
-            abort(403);
-        }
-        return redirect()->back()->with('info', 'Export Excel en cours de développement');
+    $type = $request->get('type', 'pieces');
+    $format = $request->get('format', 'pdf');
+    
+    switch($type) {
+        case 'pieces':
+            $query = PieceConviction::with(['dossier', 'emplacement']);
+            break;
+        case 'dossiers':
+            $query = Dossier::with('pieces');
+            break;
+        case 'restitutions':
+            $query = Restitution::with('piece');
+            break;
+        case 'inventaires':
+            $query = Inventaire::with(['realisePar', 'verifiePar']);
+            break;
+        case 'mouvements':
+            $query = Mouvement::with(['piece', 'fromEmplacement', 'toEmplacement']);
+            break;
+        default:
+            $query = PieceConviction::query();
     }
+    
+    if ($request->date_debut) {
+        $query->whereDate('created_at', '>=', $request->date_debut);
+    }
+    if ($request->date_fin) {
+        $query->whereDate('created_at', '<=', $request->date_fin);
+    }
+    if ($request->statut) {
+        $query->where('statut', $request->statut);
+    }
+    
+    $data = $query->get();
+    
+    if ($format == 'excel') {
+        return $this->exportExcel($type, $data);
+    }
+    
+    $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('rapports.export-pdf', compact('data', 'type'));
+    return $pdf->download('rapport_' . $type . '_' . date('Y-m-d') . '.pdf');
+}
+
+   public function exportExcel(Request $request)
+{
+    if (!Auth::user()->hasRole('admin')) {
+        abort(403);
+    }
+
+    $type = $request->get('type', 'pieces');
+    
+    switch($type) {
+        case 'pieces':
+            $query = PieceConviction::with(['dossier', 'emplacement']);
+            $export = new PiecesExport($query->get());
+            $filename = 'rapport_pieces_' . date('Y-m-d') . '.xlsx';
+            break;
+        case 'dossiers':
+            $query = Dossier::with('pieces');
+            $export = new DossiersExport($query->get());
+            $filename = 'rapport_dossiers_' . date('Y-m-d') . '.xlsx';
+            break;
+        case 'restitutions':
+            $query = Restitution::with('piece');
+            $export = new RestitutionsExport($query->get());
+            $filename = 'rapport_restitutions_' . date('Y-m-d') . '.xlsx';
+            break;
+        case 'inventaires':
+            $query = Inventaire::with(['realisePar', 'verifiePar']);
+            $export = new InventairesExport($query->get());
+            $filename = 'rapport_inventaires_' . date('Y-m-d') . '.xlsx';
+            break;
+        case 'mouvements':
+            $query = Mouvement::with(['piece', 'fromEmplacement', 'toEmplacement']);
+            $export = new MouvementsExport($query->get());
+            $filename = 'rapport_mouvements_' . date('Y-m-d') . '.xlsx';
+            break;
+        default:
+            $export = new PiecesExport();
+            $filename = 'rapport_complet_' . date('Y-m-d') . '.xlsx';
+    }
+    
+    // Appliquer les filtres si présents
+    if ($request->date_debut && method_exists($export, 'setDateDebut')) {
+        $export->setDateDebut($request->date_debut);
+    }
+    if ($request->date_fin && method_exists($export, 'setDateFin')) {
+        $export->setDateFin($request->date_fin);
+    }
+    
+    return Excel::download($export, $filename);
+}
 
     private function calculerTauxOccupation()
     {
