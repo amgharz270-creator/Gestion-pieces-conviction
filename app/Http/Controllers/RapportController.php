@@ -14,16 +14,14 @@ use Illuminate\Support\Facades\DB;
 
 class RapportController extends Controller
 {
-    // حذف __construct() تماماً
+    // Pas de __construct() - vérification manuelle dans chaque méthode
 
     public function index()
     {
-        // Vérification manuelle
         if (!Auth::user()->hasRole('admin')) {
             abort(403, 'Seul l\'administrateur peut accéder aux rapports.');
         }
 
-        // Statistiques globales
         $stats = [
             'total_pieces' => PieceConviction::count(),
             'pieces_par_categorie' => PieceConviction::select('categorie', DB::raw('count(*) as total'))
@@ -157,47 +155,81 @@ class RapportController extends Controller
         return view('rapports.inventaires', compact('inventaires', 'statuts'));
     }
 
-   public function mouvements(Request $request)
-{
-    if (!Auth::user()->hasRole('admin')) {
-        abort(403);
-    }
-
-    $query = Mouvement::with(['piece', 'fromEmplacement', 'toEmplacement']);
-
-    // Filtrer par type
-    if ($request->type) {
-        $query->where('type', $request->type);
-    }
-    
-    // Filtrer par date si besoin
-    if ($request->date_debut) {
-        $query->whereDate('date_mouvement', '>=', $request->date_debut);
-    }
-    if ($request->date_fin) {
-        $query->whereDate('date_mouvement', '<=', $request->date_fin);
-    }
-
-    $mouvements = $query->latest('date_mouvement')->paginate(20);
-    
-    // Types disponibles
-    $types = Mouvement::select('type')->distinct()->pluck('type');
-    
-    // Pas de statuts, on passe un tableau vide
-    $statuts = collect([]);
-    
-    return view('rapports.mouvements', compact('mouvements', 'types', 'statuts'));
-}
-
-    public function exportPDF($type)
+    public function mouvements(Request $request)
     {
         if (!Auth::user()->hasRole('admin')) {
             abort(403);
         }
-        return redirect()->back()->with('info', 'Export PDF en cours de développement');
+
+        $query = Mouvement::with(['piece', 'fromEmplacement', 'toEmplacement']);
+
+        if ($request->type) {
+            $query->where('type', $request->type);
+        }
+        if ($request->date_debut) {
+            $query->whereDate('date_mouvement', '>=', $request->date_debut);
+        }
+        if ($request->date_fin) {
+            $query->whereDate('date_mouvement', '<=', $request->date_fin);
+        }
+
+        $mouvements = $query->latest('date_mouvement')->paginate(20);
+        $types = Mouvement::select('type')->distinct()->pluck('type');
+        $statuts = collect([]);
+        
+        return view('rapports.mouvements', compact('mouvements', 'types', 'statuts'));
     }
 
-    public function exportExcel($type)
+    // ⭐⭐⭐ UNE SEULE méthode exportPDF ⭐⭐⭐
+    public function exportPDF(Request $request)
+    {
+        if (!Auth::user()->hasRole('admin')) {
+            abort(403);
+        }
+
+        $type = $request->get('type', 'pieces');
+        $format = $request->get('format', 'pdf');
+        
+        switch($type) {
+            case 'pieces':
+                $query = PieceConviction::with(['dossier', 'emplacement']);
+                break;
+            case 'dossiers':
+                $query = Dossier::with('pieces');
+                break;
+            case 'restitutions':
+                $query = Restitution::with('piece');
+                break;
+            case 'inventaires':
+                $query = Inventaire::with(['realisePar', 'verifiePar']);
+                break;
+            case 'mouvements':
+                $query = Mouvement::with(['piece', 'fromEmplacement', 'toEmplacement']);
+                break;
+            default:
+                $query = PieceConviction::query();
+        }
+        
+        if ($request->date_debut) {
+            $query->whereDate('created_at', '>=', $request->date_debut);
+        }
+        if ($request->date_fin) {
+            $query->whereDate('created_at', '<=', $request->date_fin);
+        }
+        if ($request->statut) {
+            $query->where('statut', $request->statut);
+        }
+        
+        $data = $query->get();
+        
+        if ($format == 'excel') {
+            return $this->exportExcel($type, $data);
+        }
+        
+        return view('rapports.export-pdf', compact('data', 'type'));
+    }
+
+    public function exportExcel($type, $data = null)
     {
         if (!Auth::user()->hasRole('admin')) {
             abort(403);

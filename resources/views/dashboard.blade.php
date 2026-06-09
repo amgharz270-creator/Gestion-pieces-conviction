@@ -710,20 +710,20 @@
                     <i class="bi bi-grid-fill"></i>
                     <span>Tableau de Bord</span>
                 </a>
-               <a href="{{ route('pieces.index') }}" class="menu-item">
-    <i class="bi bi-box-seam"></i>
-    <span>Pièces à Conviction</span>
-    <span class="badge-count">{{ $piecesCount ?? 0 }}</span>
-</a>
-               <a href="{{ route('dossiers.index') }}" class="menu-item">
-    <i class="bi bi-folder"></i>
-    <span>Dossiers</span>
-    <span class="badge-count">{{ $dossiersCount ?? 0 }}</span>
-</a>
+                <a href="{{ route('pieces.index') }}" class="menu-item">
+                    <i class="bi bi-box-seam"></i>
+                    <span>Pièces à Conviction</span>
+                    <span class="badge-count">{{ $piecesCount ?? 0 }}</span>
+                </a>
+                <a href="{{ route('dossiers.index') }}" class="menu-item">
+                    <i class="bi bi-folder"></i>
+                    <span>Dossiers</span>
+                    <span class="badge-count">{{ $dossiersCount ?? 0 }}</span>
+                </a>
                 <a href="{{ route('emplacements.index') }}" class="menu-item">
-    <i class="bi bi-geo-alt"></i>
-    <span>Emplacements</span>
-</a>
+                    <i class="bi bi-geo-alt"></i>
+                    <span>Emplacements</span>
+                </a>
             </div>
 
             <div class="menu-section">
@@ -746,9 +746,9 @@
             <div class="menu-section">
                 <div class="menu-section-title">Administration</div>
                 <a href="{{ route('users.index') }}" class="menu-item">
-    <i class="bi bi-people"></i>
-    <span>Utilisateurs</span>
-</a>
+                    <i class="bi bi-people"></i>
+                    <span>Utilisateurs</span>
+                </a>
                 <a href="{{ route('roles.index') }}" class="menu-item">
                     <i class="bi bi-shield-check"></i>
                     <span>Rôles & Permissions</span>
@@ -757,24 +757,12 @@
                     <i class="bi bi-graph-up"></i>
                     <span>Rapports & Stats</span>
                 </a>
-                <a href="#" class="menu-item">
+                <a href="{{ route('parametres.index') }}" class="menu-item">
                     <i class="bi bi-gear"></i>
                     <span>Paramètres</span>
                 </a>
             </div>
         </nav>
-
-        <!--<div class="sidebar-footer">
-            <div class="user-profile-mini">
-                <div class="user-avatar">
-                    {{ substr(Auth::user()->name, 0, 1) }}
-                </div>
-                <div class="user-info-mini">
-                    <h4>{{ Auth::user()->name }}</h4>
-                    <span>{{ Auth::user()->role }}</span>
-                </div>
-            </div>
-        </div>-->
     </aside>
 
     {{-- ===== MAIN CONTENT ===== --}}
@@ -791,22 +779,66 @@
                 </div>
             </div>
             <div class="top-bar-right">
-                <div class="top-icon-btn">
+                <div class="top-icon-btn" onclick="toggleSearch()">
                     <i class="bi bi-search"></i>
                 </div>
-                <div class="top-icon-btn">
+                <div class="top-icon-btn" onclick="toggleNotifications()">
                     <i class="bi bi-bell-fill"></i>
                     <span class="notification-badge">3</span>
                 </div>
-                <div class="top-icon-btn">
+                <div class="top-icon-btn" onclick="toggleMessages()">
                     <i class="bi bi-envelope-fill"></i>
+                    <span class="notification-badge">0</span>
                 </div>
                 <form action="{{ route('logout') }}" method="POST" style="display: inline;">
                     @csrf
-                    <button type="submit" class="top-icon-btn" title="Déconnexion">
-                        <i class="bi bi-box-arrow-right"></i>
-                    </button>
+                    <button type="submit" class="top-icon-btn"><i class="bi bi-box-arrow-right"></i></button>
                 </form>
+            </div>
+        </div>
+
+        <!-- Modal Search -->
+        <div id="searchModal" style="display: none; position: fixed; top: 70px; right: 20px; width: 350px; background: var(--card-bg); border-radius: 16px; border: 1px solid var(--card-border); z-index: 1001;">
+            <div style="padding: 20px;">
+                <input type="text" id="searchInput" placeholder="Rechercher..." style="width: 100%; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff;">
+                <div id="searchResults" style="margin-top: 15px; max-height: 300px; overflow-y: auto;"></div>
+            </div>
+        </div>
+
+        <!-- Modal Notifications -->
+        <div id="notifModal" style="display: none; position: fixed; top: 70px; right: 20px; width: 350px; background: var(--card-bg); border-radius: 16px; border: 1px solid var(--card-border); z-index: 1001;">
+            <div style="padding: 20px;">
+                <h4 style="color: var(--accent-gold); margin-bottom: 15px;">Notifications</h4>
+                <div id="notificationsList">
+                    <div class="notif-item" style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                        <i class="bi bi-box-seam" style="color: #c9a227;"></i>
+                        <span>Nouvelle pièce ajoutée</span>
+                        <small style="display: block; color: var(--text-muted);">Il y a 5 min</small>
+                    </div>
+                    <div class="notif-item" style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                        <i class="bi bi-arrow-return-left" style="color: #28a745;"></i>
+                        <span>Demande de restitution #8</span>
+                        <small style="display: block; color: var(--text-muted);">Il y a 2 heures</small>
+                    </div>
+                    <div class="notif-item" style="padding: 10px;">
+                        <i class="bi bi-exclamation-triangle" style="color: #ffc107;"></i>
+                        <span>Inventaire planifié demain</span>
+                        <small style="display: block; color: var(--text-muted);">Il y a 1 jour</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Messages -->
+        <div id="msgModal" style="display: none; position: fixed; top: 70px; right: 20px; width: 350px; background: var(--card-bg); border-radius: 16px; border: 1px solid var(--card-border); z-index: 1001;">
+            <div style="padding: 20px;">
+                <h4 style="color: var(--accent-gold); margin-bottom: 15px;">Messages</h4>
+                <div id="messagesList">
+                    <div style="text-align: center; color: var(--text-muted); padding: 20px;">
+                        <i class="bi bi-inbox" style="font-size: 2rem;"></i>
+                        <p>Aucun message</p>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -887,21 +919,21 @@
             </div>
             <div class="quick-actions-grid">
                 <a href="{{ route('pieces.create') }}" class="quick-action-btn">
-    <i class="bi bi-plus-lg"></i>
-    <span>Nouvelle Pièce</span>
-</a>
-                <a href="#" class="quick-action-btn">
+                    <i class="bi bi-plus-lg"></i>
+                    <span>Nouvelle Pièce</span>
+                </a>
+                <a href="{{ route('dossiers.create') }}" class="quick-action-btn">
                     <i class="bi bi-folder-plus"></i>
                     <span>Nouveau Dossier</span>
                 </a>
-                <a href="#" class="quick-action-btn">
-                    <i class="bi bi-qr-code"></i>
-                    <span>Scanner QR Code</span>
-                </a>
-                <a href="#" class="quick-action-btn">
-                    <i class="bi bi-file-earmark-text"></i>
-                    <span>Générer Rapport</span>
-                </a>
+                <a href="{{ route('qr-scanner') }}" class="quick-action-btn">
+    <i class="bi bi-qr-code"></i>
+    <span>Scanner QR Code</span>
+</a>
+                <a href="{{ route('generer.rapport') }}" class="quick-action-btn">
+    <i class="bi bi-file-earmark-text"></i>
+    <span>Générer Rapport</span>
+</a>
             </div>
 
             {{-- Charts & Activity --}}
@@ -916,9 +948,9 @@
                             <option>Cette Semaine</option>
                         </select>
                     </div>
-                  <div class="chart-placeholder" style="padding: 0; background: none;">
-    <canvas id="evolutionChart" style="max-height: 300px; width: 100%;"></canvas>
-</div>
+                    <div class="chart-placeholder" style="padding: 0; background: none;">
+                        <canvas id="evolutionChart" style="max-height: 300px; width: 100%;"></canvas>
+                    </div>
                 </div>
 
                 {{-- Activity Feed --}}
@@ -1081,79 +1113,82 @@
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
- const chartCanvas = document.getElementById('evolutionChart');
+    // Graphique
+    const chartCanvas = document.getElementById('evolutionChart');
     if (chartCanvas) {
         const chartCtx = chartCanvas.getContext('2d');
         const chartLabels = @json(array_column($chartData ?? [], 'mois'));
         const piecesData = @json(array_column($chartData ?? [], 'pieces'));
         const restitutionsData = @json(array_column($chartData ?? [], 'restitutions'));
 
-new Chart(chartCtx, {
-    type: 'line',
-    data: {
-        labels: chartLabels,
-        datasets: [
-            {
-                label: 'Pièces à Conviction',
-                data: piecesData,
-                borderColor: '#c9a227',
-                backgroundColor: 'rgba(201, 162, 39, 0.1)',
-                borderWidth: 3,
-                tension: 0.3,
-                fill: true,
-                pointBackgroundColor: '#c9a227',
-                pointBorderColor: '#fff',
-                pointRadius: 5,
-                pointHoverRadius: 7
+        new Chart(chartCtx, {
+            type: 'line',
+            data: {
+                labels: chartLabels,
+                datasets: [
+                    {
+                        label: 'Pièces à Conviction',
+                        data: piecesData,
+                        borderColor: '#c9a227',
+                        backgroundColor: 'rgba(201, 162, 39, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.3,
+                        fill: true,
+                        pointBackgroundColor: '#c9a227',
+                        pointBorderColor: '#fff',
+                        pointRadius: 5,
+                        pointHoverRadius: 7
+                    },
+                    {
+                        label: 'Restitutions',
+                        data: restitutionsData,
+                        borderColor: '#28a745',
+                        backgroundColor: 'rgba(40, 167, 69, 0.05)',
+                        borderWidth: 3,
+                        tension: 0.3,
+                        fill: true,
+                        pointBackgroundColor: '#28a745',
+                        pointBorderColor: '#fff',
+                        pointRadius: 5,
+                        pointHoverRadius: 7
+                    }
+                ]
             },
-            {
-                label: 'Restitutions',
-                data: restitutionsData,
-                borderColor: '#28a745',
-                backgroundColor: 'rgba(40, 167, 69, 0.05)',
-                borderWidth: 3,
-                tension: 0.3,
-                fill: true,
-                pointBackgroundColor: '#28a745',
-                pointBorderColor: '#fff',
-                pointRadius: 5,
-                pointHoverRadius: 7
-            }
-        ]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: true,
-        plugins: {
-            legend: {
-                labels: {
-                    color: '#fff',
-                    font: { family: 'Poppins', size: 12 }
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#fff',
+                            font: { family: 'Poppins', size: 12 }
+                        },
+                        position: 'top'
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        backgroundColor: 'rgba(0,0,0,0.8)',
+                        titleColor: '#c9a227',
+                        bodyColor: '#fff'
+                    }
                 },
-                position: 'top'
-            },
-            tooltip: {
-                mode: 'index',
-                intersect: false,
-                backgroundColor: 'rgba(0,0,0,0.8)',
-                titleColor: '#c9a227',
-                bodyColor: '#fff'
+                scales: {
+                    y: {
+                        grid: { color: 'rgba(255,255,255,0.05)' },
+                        ticks: { color: 'rgba(255,255,255,0.6)' },
+                        title: { display: true, text: 'Nombre', color: '#fff' }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: 'rgba(255,255,255,0.6)' }
+                    }
+                }
             }
-        },
-        scales: {
-            y: {
-                grid: { color: 'rgba(255,255,255,0.05)' },
-                ticks: { color: 'rgba(255,255,255,0.6)' },
-                title: { display: true, text: 'Nombre', color: '#fff' }
-            },
-            x: {
-                grid: { display: false },
-                ticks: { color: 'rgba(255,255,255,0.6)' }
-            }
-        }
+        });
     }
-});
-}
+
+    // Toggle Sidebar
     function toggleSidebar() {
         document.getElementById('sidebar').classList.toggle('active');
     }
@@ -1162,11 +1197,56 @@ new Chart(chartCtx, {
     document.addEventListener('click', function(e) {
         const sidebar = document.getElementById('sidebar');
         const toggle = document.querySelector('.menu-toggle');
-
         if (window.innerWidth <= 768) {
             if (!sidebar.contains(e.target) && !toggle.contains(e.target)) {
                 sidebar.classList.remove('active');
             }
+        }
+    });
+
+    // Toggle Search
+    function toggleSearch() {
+        var modal = document.getElementById('searchModal');
+        modal.style.display = modal.style.display === 'none' ? 'block' : 'none';
+        if (modal.style.display === 'block') {
+            document.getElementById('searchInput').focus();
+        }
+    }
+    
+    // Toggle Notifications
+    function toggleNotifications() {
+        var modal = document.getElementById('notifModal');
+        modal.style.display = modal.style.display === 'none' ? 'block' : 'none';
+    }
+    
+    // Toggle Messages
+    function toggleMessages() {
+        var modal = document.getElementById('msgModal');
+        modal.style.display = modal.style.display === 'none' ? 'block' : 'none';
+    }
+    
+    // Fermer les modals en cliquant ailleurs
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.top-icon-btn') && !e.target.closest('#searchModal') && !e.target.closest('#notifModal') && !e.target.closest('#msgModal')) {
+            document.getElementById('searchModal').style.display = 'none';
+            document.getElementById('notifModal').style.display = 'none';
+            document.getElementById('msgModal').style.display = 'none';
+        }
+    });
+    
+    // Search function
+    document.getElementById('searchInput')?.addEventListener('input', function() {
+        var query = this.value;
+        if (query.length > 2) {
+            fetch('/search?q=' + query)
+                .then(response => response.json())
+                .then(data => {
+                    var results = document.getElementById('searchResults');
+                    results.innerHTML = '';
+                    data.forEach(item => {
+                        results.innerHTML += '<a href="' + item.url + '" style="display: block; padding: 10px; color: #fff; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.1);">' + item.title + '</a>';
+                    });
+                });
         }
     });
 </script>

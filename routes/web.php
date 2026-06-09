@@ -14,7 +14,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InventaireController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RapportController;
-
+use App\Http\Controllers\ParametreController;
 // ========== PAGES PUBLIQUES ==========
 Route::get('/', [HomeController::class, 'index'])->name('welcome');
 
@@ -110,6 +110,40 @@ Route::middleware(['auth'])->prefix('rapports')->group(function () {
     Route::get('/export-pdf/{type}', [RapportController::class, 'exportPDF'])->name('rapports.export-pdf');
     Route::get('/export-excel/{type}', [RapportController::class, 'exportExcel'])->name('rapports.export-excel');
 });
+// ========== PARAMÈTRES ==========
+Route::middleware(['auth'])->prefix('parametres')->group(function () {
+    Route::get('/', [ParametreController::class, 'index'])->name('parametres.index');
+    Route::post('/general', [ParametreController::class, 'updateGeneral'])->name('parametres.updateGeneral');
+    Route::post('/securite', [ParametreController::class, 'updateSecurite'])->name('parametres.updateSecurite');
+    Route::post('/notifications', [ParametreController::class, 'updateNotifications'])->name('parametres.updateNotifications');
+    Route::post('/sauvegarde', [ParametreController::class, 'sauvegarde'])->name('parametres.sauvegarde');
+    Route::post('/restaurer', [ParametreController::class, 'restaurer'])->name('parametres.restaurer');
+});
+Route::get('/search', [SearchController::class, 'search'])->name('search');
+Route::get('/qr-scanner', function () {
+    return view('qr-scanner');
+})->name('qr-scanner')->middleware('auth');
+// Générer rapport
+Route::get('/generer-rapport', function () {
+    return view('generate-report');
+})->name('generer.rapport')->middleware('auth');
+Route::get('/api/piece-by-qr/{qrCode}', function ($qrCode) {
+    $piece = App\Models\PieceConviction::where('qr_code', $qrCode)->with('emplacement')->first();
+    if ($piece) {
+        return response()->json([
+            'success' => true,
+            'piece' => [
+                'id' => $piece->id,
+                'reference' => $piece->reference,
+                'description' => $piece->description,
+                'categorie' => $piece->categorie,
+                'statut' => $piece->statut,
+                'emplacement' => $piece->emplacement ? $piece->emplacement->salle . ' - ' . $piece->emplacement->armoire : null,
+            ]
+        ]);
+    }
+    return response()->json(['success' => false]);
+})->name('api.piece.by-qr')->middleware('auth'); 
 
 }); 
 //});
