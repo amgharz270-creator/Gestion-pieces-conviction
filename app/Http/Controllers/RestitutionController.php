@@ -24,26 +24,33 @@ class RestitutionController extends Controller
         return view('restitutions.create', compact('pieces'));
     }
 
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'piece_id' => 'required|exists:pieces_conviction,id',
-            'demandeur_nom' => 'required|string|max:255',
-            'demandeur_cin' => 'nullable|string|max:20',
-            'type_demandeur' => 'required|in:victime,prevenu,tiers,avocat,heritier',
-            'motif_demande' => 'required|string|max:2000',
-            'jugement_reference' => 'nullable|string|max:255',
-            'date_jugement' => 'nullable|date',
-        ]);
+   public function store(Request $request)
+{
+    $validated = $request->validate([
+        'piece_id' => 'required|exists:pieces_conviction,id',
+        'type_demandeur' => 'required|in:victime,prevenu,tiers,avocat,heritier',
+        'demandeur_nom' => 'required|string|max:255',
+        'demandeur_cin' => 'nullable|string|max:20',
+        'motif_demande' => 'required|string|min:10',
+        'jugement_reference' => 'nullable|string|max:100',
+        'date_jugement' => 'nullable|date',
+    ]);
 
-        $restitution = Restitution::create([
-            ...$validated,
-            'statut' => 'en_attente',
-        ]);
+    $restitution = Restitution::create([
+        'piece_id' => $validated['piece_id'],
+        'type_demandeur' => $validated['type_demandeur'],
+        'demandeur_nom' => $validated['demandeur_nom'],
+        'demandeur_cin' => $validated['demandeur_cin'] ?? null,
+        'motif_demande' => $validated['motif_demande'],
+        'jugement_reference' => $validated['jugement_reference'] ?? null,
+        'date_jugement' => $validated['date_jugement'] ?? null,
+        'statut' => 'en_attente',
+        'created_by' => Auth::id(),
+    ]);
 
-        return redirect()->route('restitutions.index')
-            ->with('success', 'Demande de restitution créée avec succès');
-    }
+    return redirect()->route('restitutions.index')
+        ->with('success', 'Demande de restitution créée avec succès');
+}
 
     public function show(Restitution $restitution)
     {

@@ -1004,105 +1004,94 @@
                 </div>
             </div>
 
-            {{-- Recent Pieces Table --}}
-            <div style="margin-bottom: 15px;">
-                <h3 style="color: var(--text-light); font-weight: 700; font-size: 1.1rem; margin-bottom: 20px;">
-                    <i class="bi bi-box-seam" style="color: var(--accent-gold); margin-right: 8px;"></i>
-                    Pièces Récentes
-                </h3>
-            </div>
-            <div class="table-card">
-                <table class="table-dark-custom">
-                    <thead>
-                        <tr>
-                            <th>Référence</th>
-                            <th>Catégorie</th>
-                            <th>Dossier</th>
-                            <th>Emplacement</th>
-                            <th>Statut</th>
-                            <th>Date Saisie</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="color: var(--text-light); font-weight: 600;">PC-2026-0156</td>
-                            <td><i class="bi bi-phone" style="color: var(--info); margin-right: 5px;"></i> Électronique</td>
-                            <td>2026/45</td>
-                            <td><i class="bi bi-geo-alt" style="color: var(--accent-gold); margin-right: 5px;"></i> Salle A - Armoire 2</td>
-                            <td><span class="status-badge status-depot">En Dépôt</span></td>
-                            <td>15/05/2026</td>
-                            <td>
-                                <div class="action-btns">
-                                    <a href="#" class="btn-icon-sm" title="Voir"><i class="bi bi-eye"></i></a>
-                                    <a href="#" class="btn-icon-sm" title="Modifier"><i class="bi bi-pencil"></i></a>
-                                    <a href="#" class="btn-icon-sm" title="QR Code"><i class="bi bi-qr-code"></i></a>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="color: var(--text-light); font-weight: 600;">PC-2026-0155</td>
-                            <td><i class="bi bi-file-text" style="color: var(--warning); margin-right: 5px;"></i> Document</td>
-                            <td>2026/44</td>
-                            <td><i class="bi bi-geo-alt" style="color: var(--accent-gold); margin-right: 5px;"></i> Salle B - Armoire 1</td>
-                            <td><span class="status-badge status-saisie">Saisie</span></td>
-                            <td>14/05/2026</td>
-                            <td>
-                                <div class="action-btns">
-                                    <a href="#" class="btn-icon-sm" title="Voir"><i class="bi bi-eye"></i></a>
-                                    <a href="#" class="btn-icon-sm" title="Modifier"><i class="bi bi-pencil"></i></a>
-                                    <a href="#" class="btn-icon-sm" title="QR Code"><i class="bi bi-qr-code"></i></a>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="color: var(--text-light); font-weight: 600;">PC-2026-0154</td>
-                            <td><i class="bi bi-cash" style="color: var(--success); margin-right: 5px;"></i> Argent</td>
-                            <td>2026/43</td>
-                            <td><i class="bi bi-geo-alt" style="color: var(--accent-gold); margin-right: 5px;"></i> Coffre Fort</td>
-                            <td><span class="status-badge status-depot">En Dépôt</span></td>
-                            <td>13/05/2026</td>
-                            <td>
-                                <div class="action-btns">
-                                    <a href="#" class="btn-icon-sm" title="Voir"><i class="bi bi-eye"></i></a>
-                                    <a href="#" class="btn-icon-sm" title="Modifier"><i class="bi bi-pencil"></i></a>
-                                    <a href="#" class="btn-icon-sm" title="QR Code"><i class="bi bi-qr-code"></i></a>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="color: var(--text-light); font-weight: 600;">PC-2026-0153</td>
-                            <td><i class="bi bi-car-front" style="color: var(--danger); margin-right: 5px;"></i> Véhicule</td>
-                            <td>2026/42</td>
-                            <td><i class="bi bi-geo-alt" style="color: var(--accent-gold); margin-right: 5px;"></i> Parking</td>
-                            <td><span class="status-badge status-restituee">Restituée</span></td>
-                            <td>12/05/2026</td>
-                            <td>
-                                <div class="action-btns">
-                                    <a href="#" class="btn-icon-sm" title="Voir"><i class="bi bi-eye"></i></a>
-                                    <a href="#" class="btn-icon-sm" title="Modifier"><i class="bi bi-pencil"></i></a>
-                                    <a href="#" class="btn-icon-sm" title="QR Code"><i class="bi bi-qr-code"></i></a>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="color: var(--text-light); font-weight: 600;">PC-2026-0152</td>
-                            <td><i class="bi bi-gem" style="color: var(--accent-gold); margin-right: 5px;"></i> Bijou</td>
-                            <td>2026/41</td>
-                            <td><i class="bi bi-geo-alt" style="color: var(--accent-gold); margin-right: 5px;"></i> Salle A - Armoire 1</td>
-                            <td><span class="status-badge status-en-cours">Expertise</span></td>
-                            <td>11/05/2026</td>
-                            <td>
-                                <div class="action-btns">
-                                    <a href="#" class="btn-icon-sm" title="Voir"><i class="bi bi-eye"></i></a>
-                                    <a href="#" class="btn-icon-sm" title="Modifier"><i class="bi bi-pencil"></i></a>
-                                    <a href="#" class="btn-icon-sm" title="QR Code"><i class="bi bi-qr-code"></i></a>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+           {{-- Recent Pieces Table --}}
+<div style="margin-bottom: 15px;">
+    <h3 style="color: var(--text-light); font-weight: 700; font-size: 1.1rem; margin-bottom: 20px;">
+        <i class="bi bi-box-seam" style="color: var(--accent-gold); margin-right: 8px;"></i>
+        Pièces Récentes
+    </h3>
+</div>
+<div class="table-card">
+    <table class="table-dark-custom">
+        <thead>
+            <tr>
+                <th>Référence</th>
+                <th>Catégorie</th>
+                <th>Dossier</th>
+                <th>Emplacement</th>
+                <th>Statut</th>
+                <th>Date Saisie</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @php
+                $recentPieces = App\Models\PieceConviction::with(['dossier', 'emplacement'])->latest()->take(5)->get();
+            @endphp
+            
+            @forelse($recentPieces as $piece)
+            <tr>
+                <td style="color: var(--text-light); font-weight: 600;">{{ $piece->reference }}</td>
+                <td>
+                    @if($piece->categorie == 'electronique')
+                        <i class="bi bi-phone" style="color: var(--info); margin-right: 5px;"></i>
+                    @elseif($piece->categorie == 'document')
+                        <i class="bi bi-file-text" style="color: var(--warning); margin-right: 5px;"></i>
+                    @elseif($piece->categorie == 'argent')
+                        <i class="bi bi-cash" style="color: var(--success); margin-right: 5px;"></i>
+                    @elseif($piece->categorie == 'vehicule')
+                        <i class="bi bi-car-front" style="color: var(--danger); margin-right: 5px;"></i>
+                    @elseif($piece->categorie == 'bijou')
+                        <i class="bi bi-gem" style="color: var(--accent-gold); margin-right: 5px;"></i>
+                    @else
+                        <i class="bi bi-box" style="margin-right: 5px;"></i>
+                    @endif
+                    {{ ucfirst($piece->categorie) }}
+                </td>
+                <td>{{ $piece->dossier->numero_dossier ?? 'N/A' }}</td>
+                <td>
+                    <i class="bi bi-geo-alt" style="color: var(--accent-gold); margin-right: 5px;"></i>
+                    {{ $piece->emplacement->salle ?? 'N/A' }} {{ $piece->emplacement->armoire ? '- ' . $piece->emplacement->armoire : '' }}
+                </td>
+                <td>
+                    @php
+                        $statusClass = '';
+                        if($piece->statut == 'depot') $statusClass = 'status-depot';
+                        elseif($piece->statut == 'saisie') $statusClass = 'status-saisie';
+                        elseif($piece->statut == 'restituee') $statusClass = 'status-restituee';
+                        else $statusClass = 'status-en-cours';
+                    @endphp
+                    <span class="status-badge {{ $statusClass }}">{{ ucfirst($piece->statut) }}</span>
+                </td>
+                <td>{{ $piece->date_saisie?->format('d/m/Y') }}</td>
+                <td>
+                    <div class="action-btns">
+                        <a href="{{ route('pieces.show', $piece) }}" class="btn-icon-sm" title="Voir">
+                            <i class="bi bi-eye"></i>
+                        </a>
+                        <a href="{{ route('pieces.edit', $piece) }}" class="btn-icon-sm" title="Modifier">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <a href="{{ route('pieces.qrcode', $piece) }}" class="btn-icon-sm" title="QR Code">
+                            <i class="bi bi-qr-code"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            @empty
+            <tr>
+                <td colspan="7" style="text-align: center; padding: 50px;">
+                    <i class="bi bi-inbox" style="font-size: 3rem; display: block; margin-bottom: 15px;"></i>
+                    <div style="color: var(--text-muted);">Aucune pièce trouvée</div>
+                    <a href="{{ route('pieces.create') }}" class="btn-gold mt-3" style="display: inline-block; margin-top: 15px;">
+                        <i class="bi bi-plus-lg"></i> Créer une pièce
+                    </a>
+                </td>
+            </tr>
+            @endforelse
+        </tbody>
+    </table>
+</div>
 
         </div>
     </main>

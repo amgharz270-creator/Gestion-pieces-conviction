@@ -388,4 +388,8 @@ class PieceConvictionController extends Controller
         
         return redirect()->back()->with('info', 'Fonctionnalité d\'export en cours de développement.');
     }
+    public function qrcode(PieceConviction $piece)
+{
+    return view('pieces.qrcode', compact('piece'));
+}
 }

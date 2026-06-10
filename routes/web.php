@@ -148,5 +148,6 @@ Route::get('/qr-codes', function () {
     $pieces = App\Models\PieceConviction::all();
     return view('pieces.qr-codes', compact('pieces'));
 })->name('qr.codes')->middleware('auth');
+Route::get('/pieces/{piece}/qrcode', [PieceConvictionController::class, 'qrcode'])->name('pieces.qrcode');
 }); 
 //});
